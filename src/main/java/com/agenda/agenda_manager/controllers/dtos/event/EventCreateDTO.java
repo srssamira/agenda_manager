@@ -1,13 +1,9 @@
-package com.agenda.agenda_manager.controllers.dtos;
+package com.agenda.agenda_manager.controllers.dtos.event;
 
-import java.sql.Time;
-
-public class EventDTO {
+public class EventCreateDTO {
     String id;
     String eventName;
     String description;
-    Time startTime;
-    boolean activeEvent;
 
     public String getId() {
         return id;
@@ -31,21 +27,5 @@ public class EventDTO {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Time getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Time startTime) {
-        this.startTime = startTime;
-    }
-
-    public boolean isActiveEvent() {
-        return activeEvent;
-    }
-
-    public void setActiveEvent(boolean activeEvent) {
-        this.activeEvent = activeEvent;
     }
 }

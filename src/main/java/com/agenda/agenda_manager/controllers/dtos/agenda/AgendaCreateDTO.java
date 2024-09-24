@@ -1,14 +1,15 @@
-package com.agenda.agenda_manager.controllers.dtos;
+package com.agenda.agenda_manager.controllers.dtos.agenda;
+import com.agenda.agenda_manager.controllers.dtos.event.EventCreateDTO;
+
 import java.sql.Time;
 import java.util.Date;
-import java.util.List;
 
-public class AgendaDTO {
+public class AgendaCreateDTO {
     Date startDate;
     Date endDate;
     Time startTime;
     Time endTime;
-    List<EventDTO> events;
+    EventCreateDTO event;
 
     public Date getStartDate() {
         return startDate;
@@ -42,11 +43,11 @@ public class AgendaDTO {
         this.endTime = endTime;
     }
 
-    public List<EventDTO> getEvents() {
-        return events;
+    public EventCreateDTO getEvent() {
+        return event;
     }
 
-    public void setEvents(List<EventDTO> events) {
-        this.events = events;
+    public void setEvent(EventCreateDTO event) {
+        this.event = event;
     }
 }
