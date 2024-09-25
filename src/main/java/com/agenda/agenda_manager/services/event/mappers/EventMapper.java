@@ -1,11 +1,8 @@
 package com.agenda.agenda_manager.services.event.mappers;
 
-import com.agenda.agenda_manager.controllers.dtos.agenda.AgendaCreateDTO;
 import com.agenda.agenda_manager.controllers.dtos.event.EventCreateDTO;
 import com.agenda.agenda_manager.controllers.dtos.event.EventResponseDTO;
 import com.agenda.agenda_manager.services.event.EventService;
-
-import java.util.Optional;
 
 public class EventMapper {
 
@@ -16,13 +13,9 @@ public class EventMapper {
             eventResponseDTO.setId(eventCreateDTO.getId());
             eventResponseDTO.setNameEvent(eventCreateDTO.getEventName());
             eventResponseDTO.setDescription(eventCreateDTO.getDescription());
-            eventResponseDTO.setActiveEvent(!eventService.cancelEvent(eventResponseDTO.getId()));
-
+            eventResponseDTO.setActiveEvent(true);
         return eventResponseDTO;
     }
 
-    public EventCreateDTO cloneEventDTO(String id, String name, String description) {
-        return new EventCreateDTO();
-    }
 }
 

@@ -1,10 +1,8 @@
 package com.agenda.agenda_manager.services.event;
 
-import com.agenda.agenda_manager.controllers.EventController;
 import com.agenda.agenda_manager.controllers.dtos.event.EventCreateDTO;
 import com.agenda.agenda_manager.controllers.dtos.event.EventResponseDTO;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface EventService {
@@ -15,7 +13,7 @@ public interface EventService {
 
     EventCreateDTO addEvent(String nameEvent, String description);
 
-    boolean cancelEvent(String id);
+    boolean controlActiveEvent(String id, boolean isActive);
 
     void deleteEvent(String id);
 }

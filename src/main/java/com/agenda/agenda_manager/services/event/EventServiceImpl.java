@@ -40,8 +40,17 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public boolean cancelEvent(String id) {
-        return searchEvent(id).isEmpty();
+    public boolean controlActiveEvent(String id, boolean isActive) {
+        try {
+            if (searchEvent(id).isPresent()) {
+                EventResponseDTO eventResponse = getEventById(id);
+                eventResponse.setActiveEvent(isActive);
+                return eventResponse.getActiveEvent();
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException("event doesn't exist");
+        }
+        return false;
     }
 
     @Override
