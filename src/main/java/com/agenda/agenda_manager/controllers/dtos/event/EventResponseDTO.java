@@ -1,13 +1,13 @@
-package com.agenda.agenda_manager.controllers.dtos.event.response;
+package com.agenda.agenda_manager.controllers.dtos.event;
 
 import java.sql.Time;
 
 public class EventResponseDTO {
-    String id;
-    String nameEvent;
-    String description;
-    Time startTime;
-    boolean activeEvent;
+    private String id;
+    private String nameEvent;
+    private String description;
+    private Time startTime;
+    private boolean activeEvent;
 
     public String getId() {
         return id;
@@ -41,7 +41,7 @@ public class EventResponseDTO {
         this.startTime = startTime;
     }
 
-    public boolean activeEvent() {
+    public boolean getActiveEvent() {
         return activeEvent;
     }
 

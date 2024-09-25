@@ -1,6 +1,6 @@
 package com.agenda.agenda_manager.controllers.dtos.agenda;
 
-import com.agenda.agenda_manager.controllers.dtos.event.response.EventResponseDTO;
+import com.agenda.agenda_manager.controllers.dtos.event.EventResponseDTO;
 
 import java.util.Date;
 import java.util.List;

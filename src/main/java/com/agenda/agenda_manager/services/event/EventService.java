@@ -1,19 +1,21 @@
 package com.agenda.agenda_manager.services.event;
 
+import com.agenda.agenda_manager.controllers.EventController;
 import com.agenda.agenda_manager.controllers.dtos.event.EventCreateDTO;
-import com.agenda.agenda_manager.controllers.dtos.event.response.EventResponseDTO;
+import com.agenda.agenda_manager.controllers.dtos.event.EventResponseDTO;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface EventService {
 
-    public Optional<EventCreateDTO> searchVehicle(String id);
+    Optional<EventCreateDTO> searchEvent(String id);
 
-    public EventResponseDTO getEventById(String id);
+    EventResponseDTO getEventById(String id);
 
-    public EventCreateDTO addEvent(String id, String nameEvent, String description);
+    EventCreateDTO addEvent(String nameEvent, String description);
 
-    public boolean cancelEvent(String id);
+    boolean cancelEvent(String id);
 
-    public void deleteEvent(String id);
+    void deleteEvent(String id);
 }

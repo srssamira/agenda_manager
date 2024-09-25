@@ -5,11 +5,11 @@ import java.sql.Time;
 import java.util.Date;
 
 public class AgendaCreateDTO {
-    Date startDate;
-    Date endDate;
-    Time startTime;
-    Time endTime;
-    EventCreateDTO event;
+    private Date startDate;
+    private Date endDate;
+    private Time startTime;
+    private Time endTime;
+    private EventCreateDTO event;
 
     public Date getStartDate() {
         return startDate;

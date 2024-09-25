@@ -1,9 +1,9 @@
 package com.agenda.agenda_manager.controllers.dtos.event;
 
 public class EventCreateDTO {
-    String id;
-    String eventName;
-    String description;
+    private String id;
+    private String eventName;
+    private String description;
 
     public String getId() {
         return id;
