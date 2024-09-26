@@ -4,6 +4,8 @@ import com.agenda.agenda_manager.controllers.dtos.EventRegisterDTO;
 import com.agenda.agenda_manager.controllers.dtos.EventListDTO;
 import com.agenda.agenda_manager.controllers.dtos.EventResultDTO;
 import com.agenda.agenda_manager.services.mappers.EventMapper;
+import jdk.jfr.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class EventServiceImpl implements EventService {
 
+    @Autowired
     private EventMapper eventMapper;
     private List<EventListDTO> eventListDTO = new ArrayList<>();
 
@@ -23,7 +26,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventResultDTO> getAllEvents(List<List<EventListDTO>> eventListDTOToResultList) {
+    public List<EventResultDTO> getAllEvents() {
+        List<List<EventListDTO>> eventListDTOToResultList = new ArrayList<>();
+        eventListDTOToResultList.add(eventListDTO);
         return eventMapper.toEventResult(eventListDTOToResultList);
     }
 
@@ -59,6 +64,7 @@ public class EventServiceImpl implements EventService {
 
         eventListDTO.setEventRegisterDTO(eventRegisterDTO);
 
+        this.eventListDTO.add(eventListDTO);
         return eventListDTO;
     }
 

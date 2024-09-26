@@ -3,6 +3,7 @@ package com.agenda.agenda_manager.controllers;
 import com.agenda.agenda_manager.controllers.dtos.EventListDTO;
 import com.agenda.agenda_manager.controllers.dtos.EventResultDTO;
 import com.agenda.agenda_manager.services.EventService;
+import jdk.jfr.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,10 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @GetMapping
-    public ResponseEntity<?> getAllEvents() {
+    @GetMapping("/events")
+    public ResponseEntity<List<EventResultDTO>> getAllEvents() {
+        List<EventResultDTO> events = eventService.getAllEvents();
+        return ResponseEntity.ok(events);
     }
 
     @GetMapping("/{id}")

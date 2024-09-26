@@ -3,15 +3,15 @@ package com.agenda.agenda_manager.services.mappers;
 import com.agenda.agenda_manager.controllers.dtos.EventResultDTO;
 import com.agenda.agenda_manager.controllers.dtos.EventListDTO;
 import com.agenda.agenda_manager.services.EventService;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class EventMapper {
-
-    EventService eventService;
 
     public List<EventResultDTO> toEventResult(List<List<EventListDTO>> eventListDTO) {
         List<EventResultDTO> eventResultList = new ArrayList<>();

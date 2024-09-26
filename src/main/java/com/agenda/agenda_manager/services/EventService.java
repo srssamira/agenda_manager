@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface EventService {
 
-    List<EventResultDTO> getAllEvents(List<List<EventListDTO>> eventListDTOToResultList);
+    List<EventResultDTO> getAllEvents();
 
     List<EventListDTO> getEventList();
 
