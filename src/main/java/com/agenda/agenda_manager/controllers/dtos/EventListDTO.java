@@ -1,15 +1,20 @@
-package com.agenda.agenda_manager.controllers.dtos.agenda;
-import com.agenda.agenda_manager.controllers.dtos.event.EventCreateDTO;
+package com.agenda.agenda_manager.controllers.dtos;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.sql.Time;
 import java.util.Date;
 
-public class AgendaCreateDTO {
+public class EventListDTO {
+    @JsonIgnore
+    private String id;
     private Date startDate;
     private Date endDate;
     private Time startTime;
     private Time endTime;
-    private EventCreateDTO event;
+    @JsonIgnore
+    private boolean activeEvent;
+    private EventRegisterDTO eventRegisterDTO;
 
     public Date getStartDate() {
         return startDate;
@@ -43,11 +48,27 @@ public class AgendaCreateDTO {
         this.endTime = endTime;
     }
 
-    public EventCreateDTO getEvent() {
-        return event;
+    public String getId() {
+        return id;
     }
 
-    public void setEvent(EventCreateDTO event) {
-        this.event = event;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public boolean isActiveEvent() {
+        return activeEvent;
+    }
+
+    public void setActiveEvent(boolean activeEvent) {
+        this.activeEvent = activeEvent;
+    }
+
+    public EventRegisterDTO getEventRegisterDTO() {
+        return eventRegisterDTO;
+    }
+
+    public void setEventRegisterDTO(EventRegisterDTO eventRegisterDTO) {
+        this.eventRegisterDTO = eventRegisterDTO;
     }
 }

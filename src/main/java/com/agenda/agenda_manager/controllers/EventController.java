@@ -1,11 +1,14 @@
 package com.agenda.agenda_manager.controllers;
 
-import com.agenda.agenda_manager.controllers.dtos.event.EventResponseDTO;
-import com.agenda.agenda_manager.services.event.EventService;
+import com.agenda.agenda_manager.controllers.dtos.EventListDTO;
+import com.agenda.agenda_manager.controllers.dtos.EventResultDTO;
+import com.agenda.agenda_manager.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -15,14 +18,30 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @GetMapping
+    public ResponseEntity<?> getAllEvents() {
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getEventById(@PathVariable String id) {
         try {
-            EventResponseDTO event = eventService.getEventById(id);
+            EventListDTO event = eventService.getEventById(id);
             return ResponseEntity.ok(Map.of("event", event));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createEvent(@RequestBody EventListDTO eventList) {
+        eventService.addEvent(eventList.getStartDate(),
+                eventList.getEndDate(),
+                eventList.getStartTime(),
+                eventList.getEndTime(),
+                eventList.getEventRegisterDTO().getEventName(),
+                eventList.getEventRegisterDTO().getDescription());
+
+        return ResponseEntity.status(201).body(Map.of("event", eventList));
     }
 
     @DeleteMapping
