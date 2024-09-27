@@ -1,8 +1,10 @@
 package com.agenda.agenda_manager.services.mappers;
 
+import com.agenda.agenda_manager.controllers.dtos.EventRegisterDTO;
 import com.agenda.agenda_manager.controllers.dtos.EventResponseDTO;
 import com.agenda.agenda_manager.controllers.dtos.EventCreateDTO;
 import com.agenda.agenda_manager.controllers.dtos.EventViewDTO;
+import com.agenda.agenda_manager.services.EventService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,13 +15,15 @@ import java.util.stream.Collectors;
 @Component
 public class EventMapper {
 
-    public EventViewDTO toEvents(EventCreateDTO eventListDTO) {
+    EventService eventService;
+
+    public EventViewDTO toEvents(EventCreateDTO eventCreateDTO) {
         EventViewDTO events = new EventViewDTO();
-        events.setId(eventListDTO.getId());
-        events.setDescription(eventListDTO.getEventRegisterDTO().getDescription());
-        events.setName(eventListDTO.getEventRegisterDTO().getEventName());
-        events.setStartTime(eventListDTO.getStartTime());
-        events.setActiveEvent(events.isActiveEvent());
+        events.setId(eventCreateDTO.getId());
+        events.setDescription(eventCreateDTO.getEventRegisterDTO().getDescription());
+        events.setName(eventCreateDTO.getEventRegisterDTO().getEventName());
+        events.setStartTime(eventCreateDTO.getStartTime());
+        events.setActiveEvent(eventCreateDTO.isActiveEvent());
 
         return events;
     }
@@ -28,18 +32,11 @@ public class EventMapper {
         return eventListDTOList.stream().map(this::toEvents).collect(Collectors.toList());
     }
 
-    public List<EventResponseDTO> toEventResponses(List<List<EventViewDTO>> events, EventCreateDTO eventCreateDTO) {
-        List<EventResponseDTO> eventResponseDTOList = new ArrayList<>();
-        for (List<EventViewDTO> eventViewList : events) {
-            EventResponseDTO eventResponseDTO = new EventResponseDTO();
-
-            Date date = eventCreateDTO.getStartDate();
-            eventResponseDTO.setEventosList(eventViewList);
-            eventResponseDTO.setStartDate(date);
-
-            eventResponseDTOList.add(eventResponseDTO);
-        }
-        return eventResponseDTOList;
+    public EventResponseDTO toEventResponses(List<EventViewDTO> events, Date date) {
+        EventResponseDTO eventResponseDTO = new EventResponseDTO();
+        eventResponseDTO.setEventosList(events);
+        eventResponseDTO.setStartDate(date);
+        return eventResponseDTO;
     }
 }
 

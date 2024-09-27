@@ -1,19 +1,27 @@
 package com.agenda.agenda_manager.controllers.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotNull;
 
 import java.sql.Time;
 import java.util.Date;
 
 public class EventCreateDTO {
     @JsonIgnore
+    @NotNull(message = "required field")
     private String id;
+    @NotNull(message = "required field")
     private Date startDate;
+    @NotNull(message = "required field")
     private Date endDate;
+    @NotNull(message = "required field")
     private Time startTime;
+    @NotNull(message = "required field")
     private Time endTime;
     @JsonIgnore
-    private boolean activeEvent;
+    @NotNull(message = "required field")
+    private boolean activeEvent = true;
+    @NotNull(message = "required field")
     private EventRegisterDTO eventRegisterDTO;
 
     public Date getStartDate() {

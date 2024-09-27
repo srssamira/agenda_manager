@@ -10,17 +10,17 @@ import java.util.Optional;
 
 public interface EventService {
 
-    List<EventResponseDTO> getAllEvents();
-
-    EventCreateDTO getEventCreate();
+    Optional<EventCreateDTO> searchEventCreated(String id);
 
     Optional<EventViewDTO> searchEvent(String id);
 
-    EventViewDTO getEventById(String id);
+    EventResponseDTO getEventById(String id);
 
     EventCreateDTO addEvent(Date startDate, Date endDate, Time startTime, Time endTime, String name, String description);
 
-    List<EventViewDTO> cancelEvent(String id);
+    List<EventCreateDTO> cancelEvent(String id);
+
+    List<EventResponseDTO> getAllEvents(Optional<Integer> dayOptional, Optional<Boolean> activeOptional);
 
     void deleteEvent(String id);
 }

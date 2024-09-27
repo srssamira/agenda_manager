@@ -1,13 +1,16 @@
 package com.agenda.agenda_manager.controllers.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Time;
+import java.util.Date;
 
 public class EventViewDTO {
     private String id;
     private String name;
     private String description;
     private Time startTime;
-    private boolean activeEvent = true;
+    private boolean activeEvent;
 
     public String getId() {
         return id;
