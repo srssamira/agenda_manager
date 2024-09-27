@@ -7,7 +7,7 @@ public class EventViewDTO {
     private String name;
     private String description;
     private Time startTime;
-    private boolean activeEvent;
+    private boolean activeEvent = true;
 
     public String getId() {
         return id;

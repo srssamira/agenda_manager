@@ -1,6 +1,7 @@
 package com.agenda.agenda_manager.services;
 import com.agenda.agenda_manager.controllers.dtos.EventCreateDTO;
 import com.agenda.agenda_manager.controllers.dtos.EventResponseDTO;
+import com.agenda.agenda_manager.controllers.dtos.EventViewDTO;
 
 import java.sql.Time;
 import java.util.Date;
@@ -13,13 +14,13 @@ public interface EventService {
 
     EventCreateDTO getEventCreate();
 
-    Optional<EventCreateDTO> searchEvent(String id);
+    Optional<EventViewDTO> searchEvent(String id);
 
-    EventCreateDTO getEventById(String id);
+    EventViewDTO getEventById(String id);
 
     EventCreateDTO addEvent(Date startDate, Date endDate, Time startTime, Time endTime, String name, String description);
 
-    boolean controlActiveEvent(String id, boolean isActive);
+    List<EventViewDTO> cancelEvent(String id);
 
     void deleteEvent(String id);
 }

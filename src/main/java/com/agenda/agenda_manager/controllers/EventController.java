@@ -2,6 +2,7 @@ package com.agenda.agenda_manager.controllers;
 
 import com.agenda.agenda_manager.controllers.dtos.EventCreateDTO;
 import com.agenda.agenda_manager.controllers.dtos.EventResponseDTO;
+import com.agenda.agenda_manager.controllers.dtos.EventViewDTO;
 import com.agenda.agenda_manager.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/event")
+@RequestMapping("/agenda")
 public class EventController {
 
     @Autowired
@@ -26,7 +27,7 @@ public class EventController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getEventById(@PathVariable String id) {
         try {
-            EventCreateDTO event = eventService.getEventById(id);
+            EventViewDTO event = eventService.getEventById(id);
             return ResponseEntity.ok(Map.of("event", event));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -51,10 +52,10 @@ public class EventController {
         return ResponseEntity.status(204).build();
     }
 
-    @PatchMapping("{id}/isActive")
-    public ResponseEntity<?> updateControlActiveEvent(@PathVariable String id, @RequestParam boolean isActive) {
+    @PatchMapping("/events/{id}")
+    public ResponseEntity<?> updateControlActiveEvent(@PathVariable String id) {
         try {
-            boolean controlActivity = eventService.controlActiveEvent(id, isActive);
+            List<EventViewDTO> controlActivity = eventService.cancelEvent(id);
             return ResponseEntity.ok(controlActivity);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

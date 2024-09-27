@@ -14,8 +14,9 @@ public class EventServiceImpl implements EventService {
 
     @Autowired
     private EventMapper eventMapper;
-    private EventCreateDTO eventCreateDTO = new EventCreateDTO();
-    private List<EventCreateDTO> eventCreateList = new ArrayList<>();
+    private final EventCreateDTO eventCreateDTO = new EventCreateDTO();
+    private final List<EventCreateDTO> eventCreateList = new ArrayList<>();
+    private final List<EventViewDTO> events = new ArrayList<>();
 
     public String sortId() {
         UUID uuid = UUID.randomUUID();
@@ -35,47 +36,51 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Optional<EventCreateDTO> searchEvent(String id) {
-        Optional<EventCreateDTO> eventListDTOOptional;
-        eventListDTOOptional = eventCreateList.stream().filter(event -> event.getId().equalsIgnoreCase(id)).findFirst();
-        return eventListDTOOptional;
+    public Optional<EventViewDTO> searchEvent(String id) {
+        List<EventViewDTO> events = eventMapper.toEvents(eventCreateList);
+        return events.stream().filter(event -> event.getId().equalsIgnoreCase(id)).findFirst();
     }
 
     @Override
     public EventCreateDTO addEvent(Date startDate, Date endDate, Time startTime, Time endTime, String name, String description) {
+
+        EventCreateDTO newEventDTO = new EventCreateDTO();
+
         String id = sortId();
         if (searchEvent(id).isPresent())
             throw new RuntimeException("event already exist");
 
-        eventCreateDTO.setId(id);
-        eventCreateDTO.setStartDate(startDate);
-        eventCreateDTO.setEndDate(endDate);
-        eventCreateDTO.setStartTime(startTime);
-        eventCreateDTO.setEndTime(endTime);
-        eventCreateDTO.setActiveEvent(true);
+        newEventDTO.setId(id);
+        newEventDTO.setStartDate(startDate);
+        newEventDTO.setEndDate(endDate);
+        newEventDTO.setStartTime(startTime);
+        newEventDTO.setEndTime(endTime);
 
         EventRegisterDTO eventRegisterDTO = new EventRegisterDTO();
         eventRegisterDTO.setEventName(name);
         eventRegisterDTO.setDescription(description);
 
-        eventCreateDTO.setEventRegisterDTO(eventRegisterDTO);
+        newEventDTO.setEventRegisterDTO(eventRegisterDTO);
 
-        this.eventCreateList.add(eventCreateDTO);
-        return eventCreateDTO;
+        this.eventCreateList.add(newEventDTO);
+        return newEventDTO;
     }
 
-    @Override
-    public boolean controlActiveEvent(String id, boolean isActive) {
-        try {
-            if (searchEvent(id).isPresent()) {
-                EventCreateDTO eventListDTO = getEventById(id);
-                eventListDTO.setActiveEvent(isActive);
-                return eventListDTO.isActiveEvent();
-            }
-        } catch (RuntimeException e) {
-            throw new RuntimeException("event doesn't exist");
+    public List<EventViewDTO> cancelEvent(String id) {
+        Optional<EventViewDTO> optionalEvent = searchEvent(id);
+
+        if (optionalEvent.isPresent()) {
+            EventViewDTO event = optionalEvent.get();
+            event.setActiveEvent(false);
+
+            this.events.removeIf(eventViewDTO -> eventViewDTO.getId().equalsIgnoreCase(id));
+            this.events.add(event);
+
+            return events;
+
+        } else {
+            throw new RuntimeException("event not found");
         }
-        return false;
     }
 
     @Override
@@ -86,7 +91,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventCreateDTO getEventById(String id) {
-       return searchEvent(id).orElseThrow(() -> new RuntimeException("event doesn't exist"));
+    public EventViewDTO getEventById(String id) {
+        return searchEvent(id).orElseThrow(() -> new RuntimeException("event doesn't exist"));
     }
 }
