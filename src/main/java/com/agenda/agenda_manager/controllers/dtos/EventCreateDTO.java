@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Time;
 import java.util.Date;
 
-public class EventListDTO {
+public class EventCreateDTO {
     @JsonIgnore
     private String id;
     private Date startDate;

@@ -1,10 +1,7 @@
 package com.agenda.agenda_manager.services;
 
-import com.agenda.agenda_manager.controllers.dtos.EventRegisterDTO;
-import com.agenda.agenda_manager.controllers.dtos.EventListDTO;
-import com.agenda.agenda_manager.controllers.dtos.EventResultDTO;
+import com.agenda.agenda_manager.controllers.dtos.*;
 import com.agenda.agenda_manager.services.mappers.EventMapper;
-import jdk.jfr.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +14,8 @@ public class EventServiceImpl implements EventService {
 
     @Autowired
     private EventMapper eventMapper;
-    private List<EventListDTO> eventListDTO = new ArrayList<>();
+    private EventCreateDTO eventCreateDTO = new EventCreateDTO();
+    private List<EventCreateDTO> eventCreateList = new ArrayList<>();
 
     public String sortId() {
         UUID uuid = UUID.randomUUID();
@@ -26,53 +24,51 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventResultDTO> getAllEvents() {
-        List<List<EventListDTO>> eventListDTOToResultList = new ArrayList<>();
-        eventListDTOToResultList.add(eventListDTO);
-        return eventMapper.toEventResult(eventListDTOToResultList);
+    public List<EventResponseDTO> getAllEvents() {
+        List<EventViewDTO> events = eventMapper.toEvents(eventCreateList);
+        return eventMapper.toEventResponses(List.of(events), getEventCreate());
     }
 
     @Override
-    public List<EventListDTO> getEventList() {
-        return eventListDTO;
+    public EventCreateDTO getEventCreate() {
+        return this.eventCreateDTO;
     }
 
     @Override
-    public Optional<EventListDTO> searchEvent(String id) {
-        Optional<EventListDTO> eventListDTOOptional;
-        eventListDTOOptional = eventListDTO.stream().filter(event -> event.getId().equalsIgnoreCase(id)).findFirst();
+    public Optional<EventCreateDTO> searchEvent(String id) {
+        Optional<EventCreateDTO> eventListDTOOptional;
+        eventListDTOOptional = eventCreateList.stream().filter(event -> event.getId().equalsIgnoreCase(id)).findFirst();
         return eventListDTOOptional;
     }
 
     @Override
-    public EventListDTO addEvent(Date startDate, Date endDate, Time startTime, Time endTime, String name, String description) {
+    public EventCreateDTO addEvent(Date startDate, Date endDate, Time startTime, Time endTime, String name, String description) {
         String id = sortId();
         if (searchEvent(id).isPresent())
             throw new RuntimeException("event already exist");
 
-        EventListDTO eventListDTO = new EventListDTO();
-        eventListDTO.setId(id);
-        eventListDTO.setStartDate(startDate);
-        eventListDTO.setEndDate(endDate);
-        eventListDTO.setStartTime(startTime);
-        eventListDTO.setEndTime(endTime);
-        eventListDTO.setActiveEvent(true);
+        eventCreateDTO.setId(id);
+        eventCreateDTO.setStartDate(startDate);
+        eventCreateDTO.setEndDate(endDate);
+        eventCreateDTO.setStartTime(startTime);
+        eventCreateDTO.setEndTime(endTime);
+        eventCreateDTO.setActiveEvent(true);
 
         EventRegisterDTO eventRegisterDTO = new EventRegisterDTO();
         eventRegisterDTO.setEventName(name);
         eventRegisterDTO.setDescription(description);
 
-        eventListDTO.setEventRegisterDTO(eventRegisterDTO);
+        eventCreateDTO.setEventRegisterDTO(eventRegisterDTO);
 
-        this.eventListDTO.add(eventListDTO);
-        return eventListDTO;
+        this.eventCreateList.add(eventCreateDTO);
+        return eventCreateDTO;
     }
 
     @Override
     public boolean controlActiveEvent(String id, boolean isActive) {
         try {
             if (searchEvent(id).isPresent()) {
-                EventListDTO eventListDTO = getEventById(id);
+                EventCreateDTO eventListDTO = getEventById(id);
                 eventListDTO.setActiveEvent(isActive);
                 return eventListDTO.isActiveEvent();
             }
@@ -84,13 +80,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public void deleteEvent(String id) {
-        eventListDTO.stream()
+        eventCreateList.stream()
                 .filter(eventListDTO -> !eventListDTO.getId().equalsIgnoreCase(id))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public EventListDTO getEventById(String id) {
+    public EventCreateDTO getEventById(String id) {
        return searchEvent(id).orElseThrow(() -> new RuntimeException("event doesn't exist"));
     }
 }
