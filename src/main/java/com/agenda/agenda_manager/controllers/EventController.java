@@ -43,7 +43,7 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createEvent(@RequestBody @Valid EventCreateDTO eventList) {
+    public ResponseEntity<?> createEvent(@RequestBody EventCreateDTO eventList) {
         eventService.addEvent(eventList.getStartDate(),
                 eventList.getEndDate(),
                 eventList.getStartTime(),

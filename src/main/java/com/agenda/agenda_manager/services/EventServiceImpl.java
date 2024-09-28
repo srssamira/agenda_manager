@@ -64,7 +64,7 @@ public class EventServiceImpl implements EventService {
         calendar.set(Calendar.MILLISECOND, 0);
         Date startOfDay = calendar.getTime();
 
-        List<EventCreateDTO> filteredEvents = eventCreateList;
+        List<EventCreateDTO> selectEventList = eventCreateList;
 
         if (dayOptional.isPresent()) {
             int days = dayOptional.get();
@@ -72,28 +72,28 @@ public class EventServiceImpl implements EventService {
             Date targetDate = calendar.getTime();
 
             if (days >= 0) {
-                filteredEvents = filteredEvents.stream()
+                selectEventList = selectEventList.stream()
                         .filter(event -> !event.getStartDate().before(startOfDay) && event.getStartDate().before(targetDate))
                         .collect(Collectors.toList());
             } else {
-                filteredEvents = filteredEvents.stream()
+                selectEventList = selectEventList.stream()
                         .filter(event -> event.getStartDate().before(startOfDay) && event.getStartDate().after(targetDate))
                         .collect(Collectors.toList());
             }
         } else {
-            filteredEvents = filteredEvents.stream()
+            selectEventList = selectEventList.stream()
                     .filter(event -> !event.getStartDate().before(startOfDay))
                     .collect(Collectors.toList());
         }
 
         if (activeOptional.isPresent()) {
             boolean isActive = activeOptional.get();
-            filteredEvents = filteredEvents.stream()
+            selectEventList = selectEventList.stream()
                     .filter(event -> event.isActiveEvent() == isActive)
                     .collect(Collectors.toList());
         }
 
-        List<EventViewDTO> events = eventMapper.toEvents(filteredEvents);
+        List<EventViewDTO> events = eventMapper.toEvents(selectEventList);
         return List.of(eventMapper.toEventResponses(events, today));
     }
 
